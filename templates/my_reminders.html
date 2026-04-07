@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📬 Мои уведомления</h2>
+<p style="margin-bottom: 1rem; color: #666;">
+    Здесь отображаются все автоматические напоминания о сроках аренды книг.
+</p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Дата отправки</th>
+                <th>Книга</th>
+                <th>Сообщение</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reminder in reminders %}
+            <tr>
+                <td style="white-space: nowrap;">{{ reminder.sent_date }}</td>
+                <td><strong>{{ reminder.title }}</strong></td>
+                <td>{{ reminder.message }}</td>
+                <td><span class="badge badge-info">📨 Отправлено</span></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    ✅ У вас нет новых уведомлений
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+.badge-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+</style>
+{% endblock %}

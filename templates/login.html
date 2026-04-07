@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>Вход в аккаунт</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+    <p style="margin-top: 1rem; text-align: center;">
+        Нет аккаунта? <a href="/register">Зарегистрируйтесь</a>
+    </p>
+    <hr>
+    <p style="text-align: center; color: #666;">Тестовые данные:<br>
+    Админ: admin / admin123<br>
+    Пользователь: user / user123</p>
+</div>
+{% endblock %}

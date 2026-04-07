@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>✏️ Редактирование аренды</h2>
+    
+    <div class="alert alert-info">
+        <strong>📋 Информация об аренде:</strong><br>
+        📖 Книга: <strong>{{ rental.title }}</strong><br>
+        👤 Пользователь: <strong>{{ rental.username }}</strong><br>
+        📧 Email: <strong>{{ rental.email }}</strong><br>
+        📅 Текущая дата окончания: <strong>{{ rental.end_date }}</strong><br>
+        ⏱️ Текущий срок: 
+        {% if rental.rent_type == '2weeks' %}2 недели
+        {% elif rental.rent_type == 'month' %}1 месяц
+        {% else %}3 месяца{% endif %}
+    </div>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="rent_type">📆 Новый срок аренды:</label>
+            <select id="rent_type" name="rent_type" class="form-control">
+                <option value="2weeks" {% if rental.rent_type == '2weeks' %}selected{% endif %}>2 недели</option>
+                <option value="month" {% if rental.rent_type == 'month' %}selected{% endif %}>1 месяц</option>
+                <option value="3months" {% if rental.rent_type == '3months' %}selected{% endif %}>3 месяца</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="end_date">📅 Новая дата окончания:</label>
+            <input type="date" id="end_date" name="end_date" value="{{ rental.end_date }}" required class="form-control">
+            <small class="form-text text-muted">После изменения система автоматически проверит и обновит напоминания</small>
+        </div>
+        
+        <div class="alert alert-warning">
+            ⚠️ <strong>Внимание!</strong> После сохранения изменений:
+            <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                <li>Система автоматически проверит все активные аренды пользователя</li>
+                <li>Будут отправлены актуальные напоминания</li>
+                <li>Пользователь увидит новые уведомления при следующем входе</li>
+            </ul>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Сохранить изменения</button>
+            <a href="/admin/rentals" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.alert {
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+.alert-info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+.alert-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+}
+.form-text {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+</style>
+{% endblock %}

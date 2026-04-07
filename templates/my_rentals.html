@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📚 Мои арендованные книги</h2>
+
+<div class="sort-bar">
+    <label>Сортировать:</label>
+    <select onchange="location.href='/my-rentals?sort='+this.value+'&status={{ current_status }}'">
+        <option value="end_date_asc" {% if current_sort == 'end_date_asc' %}selected{% endif %}>По дате окончания (сначала ближайшие)</option>
+        <option value="end_date_desc" {% if current_sort == 'end_date_desc' %}selected{% endif %}>По дате окончания (сначала дальние)</option>
+        <option value="start_date_asc" {% if current_sort == 'start_date_asc' %}selected{% endif %}>По дате начала (сначала старые)</option>
+        <option value="start_date_desc" {% if current_sort == 'start_date_desc' %}selected{% endif %}>По дате начала (сначала новые)</option>
+        <option value="title_asc" {% if current_sort == 'title_asc' %}selected{% endif %}>По названию (А-Я)</option>
+        <option value="title_desc" {% if current_sort == 'title_desc' %}selected{% endif %}>По названию (Я-А)</option>
+    </select>
+    
+    <label>Фильтр по статусу:</label>
+    <select onchange="location.href='/my-rentals?sort={{ current_sort }}&status='+this.value">
+        <option value="" {% if not current_status %}selected{% endif %}>Все</option>
+        <option value="active" {% if current_status == 'active' %}selected{% endif %}>Активные</option>
+        <option value="returned" {% if current_status == 'returned' %}selected{% endif %}>Возвращенные</option>
+    </select>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Книга</th>
+                <th>Автор</th>
+                <th>Срок аренды</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rental in rentals %}
+            <tr style="{% if rental.is_overdue and rental.status == 'active' %}background: #fff3cd;{% endif %}">
+                <td>{{ rental.title }}</td>
+                <td>{{ rental.author }}</td>
+                <td>
+                    {% if rental.rent_type == '2weeks' %}2 недели
+                    {% elif rental.rent_type == 'month' %}1 месяц
+                    {% else %}3 месяца{% endif %}
+                </td>
+                <td>{{ rental.start_date }}</td>
+                <td>
+                    {{ rental.end_date }}
+                    {% if rental.is_overdue and rental.status == 'active' %}
+                        <span class="badge badge-danger">ПРОСРОЧЕНО</span>
+                    {% elif rental.status == 'active' %}
+                        <span class="badge badge-success">Активна</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if rental.status == 'active' %}
+                        <span style="color: green;">Активна</span>
+                    {% else %}
+                        <span style="color: gray;">Возвращена</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">У вас нет арендованных книг</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container" style="max-width: 800px;">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Автор:</strong> {{ book.author }}</p>
+    <p><strong>Категория:</strong> {{ book.category }}</p>
+    <p><strong>Год:</strong> {{ book.year }}</p>
+    <p><strong>Описание:</strong> {{ book.description }}</p>
+    <p><strong>Цена покупки:</strong> {{ book.price }} ₽</p>
+    <hr>
+    <h3>💰 Цены аренды:</h3>
+    <ul>
+        <li>2 недели: {{ book.rent_price_2weeks }} ₽</li>
+        <li>1 месяц: {{ book.rent_price_month }} ₽</li>
+        <li>3 месяца: {{ book.rent_price_3months }} ₽</li>
+    </ul>
+    
+    <div class="form-actions">
+        <a href="/books" class="btn btn-secondary">Назад к книгам</a>
+        <a href="/rent/{{ book.id }}" class="btn btn-success">Арендовать</a>
+    </div>
+</div>
+{% endblock %}

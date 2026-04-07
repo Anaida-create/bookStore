@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>Аренда книги: {{ book.title }}</h2>
+    <p>Автор: {{ book.author }}</p>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="rent_type">Выберите срок аренды:</label>
+            <select id="rent_type" name="rent_type" required class="form-control">
+                <option value="2weeks">2 недели - {{ book.rent_price_2weeks }} ₽</option>
+                <option value="month">1 месяц - {{ book.rent_price_month }} ₽</option>
+                <option value="3months">3 месяца - {{ book.rent_price_3months }} ₽</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">Подтвердить аренду</button>
+            <a href="/book/{{ book.id }}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

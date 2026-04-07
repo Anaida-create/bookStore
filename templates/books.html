@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📚 Каталог книг</h2>
+
+<!-- Блок фильтров -->
+<div class="filter-bar">
+    <div class="filter-group">
+        <label>📂 Фильтр по категории:</label>
+        <select onchange="applyFilters()" id="category_filter">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+            <option value="{{ cat.category }}" {% if current_category == cat.category %}selected{% endif %}>
+                {{ cat.category }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="filter-group">
+        <label>✍️ Фильтр по автору:</label>
+        <select onchange="applyFilters()" id="author_filter">
+            <option value="">Все авторы</option>
+            {% for auth in authors %}
+            <option value="{{ auth.author }}" {% if current_author == auth.author %}selected{% endif %}>
+                {{ auth.author }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="filter-group">
+        <label>📅 Фильтр по году:</label>
+        <select onchange="applyFilters()" id="year_filter">
+            <option value="">Все годы</option>
+            {% for y in years %}
+            <option value="{{ y.year }}" {% if current_year == y.year|string %}selected{% endif %}>
+                {{ y.year }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<!-- Блок сортировки -->
+<div class="sort-bar">
+    <label>🔄 Сортировать по:</label>
+    <select onchange="applyFilters()" id="sort_filter">
+        <optgroup label="📖 По названию">
+            <option value="title_asc" {% if current_sort == 'title_asc' %}selected{% endif %}>Названию (А-Я)</option>
+            <option value="title_desc" {% if current_sort == 'title_desc' %}selected{% endif %}>Названию (Я-А)</option>
+        </optgroup>
+        <optgroup label="✍️ По автору">
+            <option value="author_asc" {% if current_sort == 'author_asc' %}selected{% endif %}>Автору (А-Я)</option>
+            <option value="author_desc" {% if current_sort == 'author_desc' %}selected{% endif %}>Автору (Я-А)</option>
+        </optgroup>
+        <optgroup label="📂 По категории">
+            <option value="category_asc" {% if current_sort == 'category_asc' %}selected{% endif %}>Категории (А-Я)</option>
+            <option value="category_desc" {% if current_sort == 'category_desc' %}selected{% endif %}>Категории (Я-А)</option>
+        </optgroup>
+        <optgroup label="📅 По году">
+            <option value="year_asc" {% if current_sort == 'year_asc' %}selected{% endif %}>Году (старые сначала)</option>
+            <option value="year_desc" {% if current_sort == 'year_desc' %}selected{% endif %}>Году (новые сначала)</option>
+        </optgroup>
+        <optgroup label="💰 По цене">
+            <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цене (сначала дешевые)</option>
+            <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цене (сначала дорогие)</option>
+        </optgroup>
+    </select>
+    
+    <button onclick="resetFilters()" class="btn btn-secondary btn-sm">Сбросить все фильтры</button>
+</div>
+
+<!-- Результаты -->
+<div class="book-grid">
+    {% for book in books %}
+    <div class="book-card">
+        <div class="book-title">{{ book.title }}</div>
+        <div class="book-author">{{ book.author }}</div>
+        <div class="book-category">{{ book.category }} • {{ book.year }}</div>
+        <div class="book-price">Цена: {{ book.price }} ₽</div>
+        <div style="margin-top: 1rem;">
+            <a href="/book/{{ book.id }}" class="btn btn-primary btn-sm">Подробнее</a>
+            <a href="/rent/{{ book.id }}" class="btn btn-success btn-sm">Арендовать</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>😢 Книги не найдены</p>
+        <button onclick="resetFilters()" class="btn btn-primary">Сбросить фильтры</button>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function applyFilters() {
+    const category = document.getElementById('category_filter').value;
+    const author = document.getElementById('author_filter').value;
+    const year = document.getElementById('year_filter').value;
+    const sort = document.getElementById('sort_filter').value;
+    
+    let url = '/books?';
+    if (category) url += 'category=' + encodeURIComponent(category) + '&';
+    if (author) url += 'author=' + encodeURIComponent(author) + '&';
+    if (year) url += 'year=' + encodeURIComponent(year) + '&';
+    url += 'sort=' + encodeURIComponent(sort);
+    
+    window.location.href = url;
+}
+
+function resetFilters() {
+    window.location.href = '/books?sort=title_asc';
+}
+</script>
+{% endblock %}

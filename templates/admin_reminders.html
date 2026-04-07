@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📋 История автоматических напоминаний</h2>
+<p style="margin-bottom: 1rem; color: #666;">
+    Система автоматически отправляет напоминания пользователям:
+    <strong>за 3 дня до окончания, за 1 день до окончания и после просрочки</strong>
+</p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Дата отправки</th>
+                <th>Пользователь</th>
+                <th>Email</th>
+                <th>Книга</th>
+                <th>Сообщение</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reminder in reminders %}
+            <tr>
+                <td style="white-space: nowrap;">{{ reminder.sent_date }}</td>
+                <td>{{ reminder.username }}</td>
+                <td>{{ reminder.email }}</td>
+                <td>{{ reminder.title }}</td>
+                <td style="max-width: 400px;">{{ reminder.message }}</td>
+                <td><span class="badge badge-success">✅ Отправлено</span></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    📭 Нет отправленных напоминаний
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

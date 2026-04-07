@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero">
+    <h1>📚 Добро пожаловать в BookStore!</h1>
+    <p>Крупнейшая библиотека книг с возможностью аренды</p>
+    <a href="/books" class="btn btn-primary">Начать покупки →</a>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+    <div class="book-card" style="text-align: center;">
+        <h3>📖 8+ книг</h3>
+        <p>В нашей библиотеке</p>
+    </div>
+    <div class="book-card" style="text-align: center;">
+        <h3>⏱️ Гибкая аренда</h3>
+        <p>2 недели / месяц / 3 месяца</p>
+    </div>
+    <div class="book-card" style="text-align: center;">
+        <h3>💰 Доступные цены</h3>
+        <p>Аренда от 69₽</p>
+    </div>
+</div>
+{% endblock %}
